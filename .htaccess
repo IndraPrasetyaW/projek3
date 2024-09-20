@@ -1,0 +1,19 @@
+# Menonaktifkan listing direktori
+Options -Indexes
+
+# Konfigurasi mod_rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Arahkan permintaan yang tidak mengandung 'public' di URI ke frontend/web/
+    RewriteCond %{REQUEST_URI} !^/public
+    RewriteRule ^(.*)$ /frontend/web/$1 [L]
+</IfModule>
+
+# Menolak akses ke file dengan ekstensi .json, .lock, atau yang terkait dengan git
+<FilesMatch "\.(json|lock|git)$">
+    Require all denied
+</FilesMatch>
+
+# Menolak akses ke file atau direktori yang dimulai dengan titik
+RewriteRule (^\.|/\.) - [F]
